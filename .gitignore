@@ -1,0 +1,7 @@
+/elmo/1-billion-word/
+/elmo/sentence-polarity-dataset-v1/
+/elmo/1-billion-word.tar.gz
+/elmo/sentence-polarity-dataset-v1.tar.gz
+/word2vec/data/
+/word2vec/embedding-100.pth
+/.idea
