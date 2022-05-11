@@ -5,3 +5,6 @@
 /word2vec/data/
 /word2vec/embedding-100.pth
 /.idea
+/machine_translation/data/2015-01/
+/machine_translation/data/2015-01.tgz
+/machine_translation/data/zh-en/
