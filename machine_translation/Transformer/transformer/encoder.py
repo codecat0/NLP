@@ -32,7 +32,7 @@ class TransformerEncoderLayer(nn.Layer):
         :param activation: 前向神经网络后激活函数类型
         :param attn_dropout: 多头注意力机制中dropout层的设置
         :param act_dropout: dropout层后的激活函数
-        :param normalize_before:
+        :param normalize_before: LayerNorm放在多头注意力和前向神经网络前还是后面
         """
         super(TransformerEncoderLayer, self).__init__()
         attn_dropout = dropout if attn_dropout is None else attn_dropout
