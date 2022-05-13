@@ -31,9 +31,7 @@ class MultiHeadAttention(nn.Layer):
                  dropout=0,
                  kdim=None,
                  vdim=None,
-                 need_weights=False,
-                 weight_attr=None,
-                 bias_attr=None):
+                 need_weights=False):
         super(MultiHeadAttention, self).__init__()
         self.embed_dim = embed_dim
         self.kdim = kdim if kdim is not None else embed_dim
@@ -46,16 +44,16 @@ class MultiHeadAttention(nn.Layer):
         assert self.head_dim * num_heads == self.embed_dim, 'embed_dim must be divisible by num_heads'
 
         self.q_proj = nn.Linear(
-            embed_dim, embed_dim, weight_attr=weight_attr, bias_attr=bias_attr
+            embed_dim, embed_dim
         )
         self.k_proj = nn.Linear(
-            self.kdim, embed_dim, weight_attr=weight_attr, bias_attr=bias_attr
+            self.kdim, embed_dim
         )
         self.v_proj = nn.Linear(
-            self.vdim, embed_dim, weight_attr=weight_attr, bias_attr=bias_attr
+            self.vdim, embed_dim
         )
         self.out_proj = nn.Linear(
-            embed_dim, embed_dim, weight_attr=weight_attr, bias_attr=bias_attr
+            embed_dim, embed_dim
         )
 
     def _prepare_qkv(self, query, key, value):
