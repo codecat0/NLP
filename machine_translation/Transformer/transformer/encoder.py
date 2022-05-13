@@ -50,8 +50,7 @@ class TransformerEncoderLayer(nn.Layer):
             d_model, dim_feedforward
         )
         self.dropout = nn.Dropout(
-            act_dropout,
-            mode='upscale_in_train'
+            p=act_dropout
         )
         self.linear2 = nn.Linear(
             dim_feedforward, d_model
@@ -59,7 +58,9 @@ class TransformerEncoderLayer(nn.Layer):
         self.norm1 = nn.LayerNorm(d_model)
         self.norm2 = nn.LayerNorm(d_model)
         self.dropout1 = nn.Dropout(dropout)
-        self.dropout2 = nn.Dropout(dropout)
+        self.dropout2 = nn.Dropout(
+            p=dropout
+        )
         self.activation = getattr(F, activation)
 
     def forward(self, src, src_mask=None):
