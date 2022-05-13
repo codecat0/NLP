@@ -95,7 +95,7 @@ class MultiHeadAttention(nn.Layer):
         # 计算 q*k/sqrt(d) 注意力权重
         product = tensor.matmul(
             x=q, y=k, transpose_y=True
-        ) / tensor.sqrt(self.head_dim)
+        ) / self.head_dim ** -0.5
 
         if attn_mask is not None:
             attn_mask = _convert_attention_mask(attn_mask, product.dtype)
