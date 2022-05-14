@@ -96,7 +96,7 @@ class Transformer(nn.Layer):
         return paddle.tensor.triu(
             (paddle.ones(
                 shape=(length, length), dtype=paddle.get_default_dtype()
-            )) * -np.inf
+            ) * -np.inf), 1
         )
 
 

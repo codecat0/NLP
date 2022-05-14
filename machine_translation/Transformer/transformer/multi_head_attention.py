@@ -30,15 +30,13 @@ class MultiHeadAttention(nn.Layer):
                  num_heads,
                  dropout=0,
                  kdim=None,
-                 vdim=None,
-                 need_weights=False):
+                 vdim=None):
         super(MultiHeadAttention, self).__init__()
         self.embed_dim = embed_dim
         self.kdim = kdim if kdim is not None else embed_dim
         self.vdim = vdim if vdim is not None else embed_dim
         self.num_heads = num_heads
         self.dropout = dropout
-        self.need_weights = need_weights
 
         self.head_dim = embed_dim // num_heads
         assert self.head_dim * num_heads == self.embed_dim, 'embed_dim must be divisible by num_heads'
@@ -117,9 +115,6 @@ class MultiHeadAttention(nn.Layer):
 
         out = self.out_proj(out)
 
-        outs = [out]
-        if self.need_weights:
-            outs.append(weights)
-        return out if len(outs) == 1 else tuple(outs)
+        return out
 
 

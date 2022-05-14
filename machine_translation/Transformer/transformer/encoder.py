@@ -42,8 +42,7 @@ class TransformerEncoderLayer(nn.Layer):
         self.self_attn = MultiHeadAttention(
             embed_dim=d_model,
             num_heads=nhead,
-            dropout=attn_dropout,
-            need_weights=True
+            dropout=attn_dropout
         )
 
         self.linear1 = nn.Linear(
@@ -73,7 +72,7 @@ class TransformerEncoderLayer(nn.Layer):
         if self.normalize_before:
             src = self.norm1(src)
         # 多头注意力
-        src, att_weights = self.self_attn(
+        src = self.self_attn(
             src, src, src, src_mask
         )
 
@@ -90,7 +89,7 @@ class TransformerEncoderLayer(nn.Layer):
         if not self.normalize_before:
             src = self.norm2(src)
 
-        return src, att_weights
+        return src
 
 
 
@@ -111,15 +110,13 @@ class TransformerEncoder(nn.Layer):
     def forward(self, src, src_mask=None):
         src_mask = _convert_attention_mask(src_mask, src.dtype)
         output = src
-        att_weights_list = []
         for i, mod in enumerate(self.layers):
-            output, att_weights = mod(output, src_mask=src_mask)
-            att_weights_list.append(att_weights)
+            output = mod(output, src_mask=src_mask)
 
         if self.norm is not None:
             output = self.norm(output)
 
-        return output, att_weights_list
+        return output
 
 
 if __name__ == '__main__':
@@ -138,6 +135,6 @@ if __name__ == '__main__':
         encoder_layer=encoder_layer,
         num_layers=8
     )
-    enc_output, _ = encoder(enc_input, attn_mask)
+    enc_output = encoder(enc_input, attn_mask)
     print(enc_output.shape)
 
