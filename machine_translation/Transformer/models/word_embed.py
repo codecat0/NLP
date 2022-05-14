@@ -13,6 +13,11 @@ import paddle.nn as nn
 
 class WordEmbedding(nn.Layer):
     def __init__(self, vocab_size, emb_dim, bos_id=0):
+        """
+        :param vocab_size: 词表大小
+        :param emb_dim: embeding向量大小
+        :param bos_id: padding id
+        """
         super(WordEmbedding, self).__init__()
         self.emb_dim = emb_dim
 
