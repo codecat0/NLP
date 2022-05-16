@@ -16,55 +16,6 @@ from position_embed import PositionEmbedding
 from ..transformer.transformer import Transformer
 
 
-class TransformerDecodeCell(nn.Layer):
-    def __init__(self,
-                 decoder,
-                 word_embedding=None,
-                 pos_embedding=None,
-                 linear=None,
-                 dropout=0.1):
-        super(TransformerDecodeCell, self).__init__()
-        self.decoder = decoder
-        self.word_embedding = word_embedding
-        self.pos_embedding = pos_embedding
-        self.linear = linear
-        self.dropout = dropout
-
-    def forward(self, inputs, trg_src_attn_bias, memory):
-        """
-        :param inputs: 列表or元组 包含target ids和position ids
-        :param trg_src_attn_bias: mask操作，防止模型看到未来时刻的词
-        :param memory: encoder输出
-        :return:
-        """
-
-        if self.word_embedding:
-            if not isinstance(inputs, (list, tuple)):
-                raise ValueError('when Word Embedding is not None, inputs must include target ids and position ids')
-
-            word_emb = self.word_embedding[inputs[0]]
-            pos_emb = self.pos_embedding(inputs[1])
-            word_emb = word_emb + pos_emb
-            inputs = F.dropout(
-                x=word_emb,
-                p=self.dropout,
-                training=False
-            ) if self.dropout else word_emb
-
-            cell_outputs = self.decoder(
-                inputs, memory, None, trg_src_attn_bias
-            )
-        else:
-            cell_outputs = self.decoder(
-                inputs, memory, None, trg_src_attn_bias
-            )
-
-        if self.linear:
-            cell_outputs = self.linear(cell_outputs)
-
-        return cell_outputs
-
-
 class TransformerModel(nn.Layer):
     def __init__(self,
                  src_vocab_size,
